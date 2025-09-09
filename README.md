@@ -35,16 +35,14 @@ You should see both OApps successfully exchange messages.
 
 ## Example Output
 
-Here is the result of running forge test:
+Here is the result of running `forge test`:
 
-<p align="center"> <img src="assets/test-output.png" alt="Forge test output" width="700"/> </p>
+<img width="878" height="252" alt="test-output" src="https://github.com/user-attachments/assets/15c8b228-b1b1-48c0-b34c-1c0a663d4bca" />
 
 ## Repository Structure
 
-- contracts/MyOApp.sol — Example omnichain contract with ping-pong logic
+- `contracts/MyOApp.sol` — Example omnichain contract with ping-pong logic  
+- `test/MyOApp.t.sol` — Foundry test simulating cross-chain messaging  
+- `layerzero.config.ts` — Configuration file for LayerZero wiring  
+- `hardhat.config.ts`, `foundry.toml` — Project configs for Hardhat and Foundry
 
-- test/MyOApp.t.sol — Foundry test simulating cross-chain messaging
-
-- layerzero.config.ts — Wiring configuration
-
-- Hardhat/Foundry configs (hardhat.config.ts, foundry.toml)
