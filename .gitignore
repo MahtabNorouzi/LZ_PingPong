@@ -1,0 +1,10 @@
+node_modules/
+.env
+cache/
+artifacts/
+out/
+coverage/
+broadcast/
+lib/
+typechain/
+foundry.toml.lock

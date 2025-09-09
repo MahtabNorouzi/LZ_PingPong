@@ -3,6 +3,8 @@ pragma solidity ^0.8.20;
 
 // MyOApp imports
 import { MyOApp, MessagingFee } from "../../contracts/MyOApp.sol";
+import { console2 } from "forge-std/console2.sol";
+
 
 // OApp imports
 import { IOAppOptionsType3, EnforcedOptionParam } from "@layerzerolabs/oapp-evm/contracts/oapp/libs/OAppOptionsType3.sol";
@@ -56,7 +58,10 @@ contract MyOAppTest is TestHelperOz5 {
     }
 
     function test_send_string() public {
+        // Enough to cover the reply fee
+        vm.deal(address(bOApp), 1 ether);
         bytes memory options = OptionsBuilder.newOptions().addExecutorLzReceiveOption(500000000, 500000000);
+
         string memory message = "Hello, World!";
         MessagingFee memory fee = aOApp.quoteSendString(bEid, message, options, false);
 
@@ -65,11 +70,18 @@ contract MyOAppTest is TestHelperOz5 {
 
         vm.prank(userA);
         aOApp.sendString{ value: fee.nativeFee }(bEid, message, options);
-        verifyPackets(bEid, addressToBytes32(address(bOApp)));
 
+        // B receives A->B
+        verifyPackets(bEid, addressToBytes32(address(bOApp)));
+        // A receives B->A (the reply)
         verifyPackets(aEid, addressToBytes32(address(aOApp)));
 
         assertEq(aOApp.lastMessage(), "message received");
         assertEq(bOApp.lastMessage(), message);
+
+        console2.log("bOApp.lastMessage: %s", bOApp.lastMessage()); // -> "Hello, World!"
+        console2.log("aOApp.lastMessage: %s", aOApp.lastMessage()); // -> "message received"
+
     }
+
 }
